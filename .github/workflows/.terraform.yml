@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - name: Testar AWS CLI
+        run: aws sts get-caller-identity
+
       - name: Checkout do código
         uses: actions/checkout@v4
 
