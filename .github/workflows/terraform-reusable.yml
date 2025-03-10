@@ -1,0 +1,54 @@
+name: Terraform Reusable Deploy
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      aws_region:
+        required: true
+        type: string
+      role_arn:
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env:
+      TF_VAR_environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Instalar Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
+      - name: Configurar AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ inputs.role_arn }}
+          role-session-name: github-actions
+          aws-region: ${{ inputs.aws_region }}
+
+      - name: Inicializar Terraform
+        run: |
+          terraform init \
+            -backend-config="bucket=s3-${{ inputs.environment }}-igormartins0301-tfstate" \
+            -backend-config="region=${{ inputs.aws_region }}" \
+            -backend-config="key=${{ inputs.environment }}/terraform.tfstate"
+
+      - name: Terraform Plan
+        run: terraform plan -var="environment=${{ inputs.environment }}" -out=tfplan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
