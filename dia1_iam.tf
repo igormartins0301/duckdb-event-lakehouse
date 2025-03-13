@@ -22,8 +22,8 @@ resource "aws_iam_policy" "s3_uploader_policy" {
 }
 
 resource "aws_iam_user_policy_attachment" "attach_s3_policy"{
-    user       = aws_iam_user.s3_uploader
-    policy_arn = aws_iam_policy.s3_uploader_policy
+    user       = aws_iam_user.s3_uploader.name
+    policy_arn = aws_iam_policy.s3_uploader_policy.arn
 }
 
 resource "aws_iam_access_key" "s3_uploader_key" {
