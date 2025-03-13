@@ -15,5 +15,4 @@ jobs:
     with:
       environment: 'prd'
       aws_region: 'us-east-2'
-    secrets:
-      role_arn: ${{ secrets.AWS_ROLE_ARN_OIDC }}
+      role_arn: ${{ secrets.AWS_ROLE_ARN_OIDC }}  # Passando como input
