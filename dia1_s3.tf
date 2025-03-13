@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "bucket_dia1_uploads" {
-  bucket = "bucket_dia1_uploads"
+  bucket = "bucket-dia1-uploads"
   force_destroy = true
 }
 
