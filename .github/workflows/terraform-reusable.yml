@@ -9,6 +9,7 @@ on:
       aws_region:
         required: true
         type: string
+    secrets:
       role_arn:
         required: true
 
@@ -35,7 +36,7 @@ jobs:
       - name: Configurar AWS Credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ inputs.role_arn }}  # Pegando o valor correto
+          role-to-assume: ${{ secrets.role_arn }}
           role-session-name: github-actions
           aws-region: ${{ inputs.aws_region }}
 
