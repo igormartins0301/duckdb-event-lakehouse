@@ -50,5 +50,22 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -var="environment=${{ inputs.environment }}" -out=tfplan
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+      - name: Rodar Terraform Plan e Apply em todos os diretórios com .tf
+        run: |
+          # Encontrar diretórios com arquivos .tf
+          find . -name "*.tf" -exec dirname {} \; | sort -u | while read dir; do
+            echo "Rodando terraform no diretório $dir"
+            cd "$dir"
+            
+            # Inicializa o Terraform no diretório
+            terraform init -backend-config="bucket=s3-${{ inputs.environment }}-igormartins0301-tfstate" \
+              -backend-config="region=${{ inputs.aws_region }}" \
+              -backend-config="key=${{ inputs.environment }}/terraform.tfstate"
+            
+            # Gera o plano do Terraform
+            terraform plan -var="environment=${{ inputs.environment }}" -out=tfplan
+            
+            # Aplica o plano gerado
+            terraform apply -auto-approve tfplan
+            cd -
+          done
