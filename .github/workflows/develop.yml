@@ -15,4 +15,4 @@ jobs:
     with:
       environment: 'dev'
       aws_region: 'us-east-2'
-      role_arn: ${{ secrets.AWS_ROLE_ARN }} 
+      role_arn: ${{ secrets.AWS_ROLE_ARN_OIDC }} 
