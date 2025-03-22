@@ -40,10 +40,7 @@ resource "aws_s3_bucket_policy" "raw_policy" {
         Sid    = "AllowSecureUserUploads"
         Effect = "Allow"
         Principal = {
-          AWS = [
-            "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
-            "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/data-engineer-role"
-          ]
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
         }
         Action = [
           "s3:PutObject",
