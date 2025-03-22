@@ -52,14 +52,6 @@ resource "aws_s3_bucket_policy" "raw_policy" {
           aws_s3_bucket.raw_data.arn,
           "${aws_s3_bucket.raw_data.arn}/*"
         ]
-        Condition = {
-          Bool = {
-            "aws:SecureTransport" = "true"
-          }
-          StringEquals = {
-            "s3:x-amz-acl" = "bucket-owner-full-control"
-          }
-        }
       }
     ]
   })
