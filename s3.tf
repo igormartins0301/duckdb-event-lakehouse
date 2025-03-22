@@ -37,19 +37,6 @@ resource "aws_s3_bucket_policy" "raw_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid       = "AllowLambdaWrite"
-        Effect    = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-        Action   = ["s3:PutObject", "s3:GetObject", "s3:ListBucket"]
-        Resource = [
-          aws_s3_bucket.raw_data.arn,
-          "${aws_s3_bucket.raw_data.arn}/*"
-        ]
-      },
-      
-      {
         Sid    = "AllowSecureUserUploads"
         Effect = "Allow"
         Principal = {
